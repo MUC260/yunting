@@ -64,31 +64,57 @@
     var p = SITE.pages.home || { title: '云听', html: '' };
     document.title = '云听｜听见，是一种陪伴';
     crumb('首页');
-    var notices = (SITE.notices || []).map(function (n, i) {
-      var alert = n.id === 'n5' ? ' class="alert"' : '';
-      return '<li' + alert + '><a href="#/news">' + Y.esc(n.title) + '</a><span class="d">' + Y.esc(n.date) + '</span></li>';
+    var n = SITE.notices || [];
+    var notices = n.map(function (x) {
+      var alert = x.id === 'n5' ? ' class="alert"' : '';
+      return '<li' + alert + '><a href="#/news">' + Y.esc(x.title) + '</a><span class="d">' + Y.esc(x.date) + '</span></li>';
     }).join('');
+    var side = [
+      ['听力检测', '#/fitting'], ['助听器验配', '#/fitting'], ['耳模制作', '#/fitting'],
+      ['售后维护', '#/fitting'], ['代客祭扫', '#/memorial'], ['夜间值守', '#/memorial'],
+      ['迁坟服务', '#/memorial'], ['代读祭文', '#/memorial']
+    ].map(function (x) { return '<li><a href="' + x[1] + '">' + x[0] + '</a></li>'; }).join('');
     app.innerHTML =
-      '<div class="cols">' +
-        '<div class="col-main">' +
-          '<div class="panel"><div class="panel-h">云听　YUNTING</div><div class="panel-b"><div class="doc-body">' + p.html + '</div></div></div>' +
-          '<div class="panel"><div class="panel-h">业务入口</div><div class="panel-b"><div class="biz">' +
-            '<div class="biz-card"><h3>云听 · 验配</h3><p>免费在线听力自测，约 6 分钟。需佩戴耳机。</p>' +
-              '<a class="btn" href="#/selftest">开始自测</a></div>' +
-            '<div class="biz-card"><h3>云听 · 代祭</h3><p>清明、冬至、忌日，代您上香、代您焚化、代您说话。</p>' +
-              '<a class="btn ghost" href="#/memorial">查看服务</a></div>' +
+      '<div class="layout">' +
+        '<div class="side">' +
+          '<div class="box"><div class="box-h">业务分类</div><div class="box-b tight"><ul class="sidelist">' + side + '</ul></div></div>' +
+          '<div class="box"><div class="box-h">扫码关注</div><div class="box-b" style="text-align:center">' +
+            '<div style="width:92px;height:92px;margin:0 auto;border:1px solid #999;background:repeating-conic-gradient(#1a1a1a 0 25%, #fff 0 50%) 0 0/10px 10px"></div>' +
+            '<div style="font-size:11.5px;color:#666;margin-top:5px">云听服务号</div></div></div>' +
+        '</div>' +
+        '<div class="main-col">' +
+          '<div class="box"><div class="box-h">通知公告<span class="more"><a href="#/news">更多 &gt;&gt;</a></span></div>' +
+            '<div class="box-b tight"><div class="scroll-box"><div class="scroll-inner">' +
+              '<ul class="noticelist">' + notices + notices + '</ul>' +
+            '</div></div></div></div>' +
+          '<div class="box"><div class="box-h">公司简介</div><div class="box-b"><div class="doc-body">' + p.html + '</div></div></div>' +
+          '<div class="box"><div class="box-h">业务办理</div><div class="box-b"><div class="biz">' +
+            '<div class="biz-card"><h3>云听 · 验配</h3><p>免费在线听力自测，约 6 分钟。需佩戴耳机。结果仅供参考，不作为诊断依据。</p>' +
+              '<a class="btn primary" href="#/selftest">开始自测</a>　<a class="btn" href="#/fitting">了解验配</a></div>' +
+            '<div class="biz-card"><h3>云听 · 代祭</h3><p>清明、冬至、忌日，代您上香、代您焚化、代您说话。全流程录音，可申请调阅。</p>' +
+              '<a class="btn" href="#/memorial">查看服务</a>　<a class="btn" href="#/price">价格表</a></div>' +
+          '</div></div></div>' +
+          '<div class="box"><div class="box-h">平台数据</div><div class="box-b" style="padding:0"><div class="statbar">' +
+            '<div>合作门店 <b>2,847</b> 家</div>' +
+            '<div>注册验配师 <b>1,206</b> 人</div>' +
+            '<div>累计服务 <b>3,281,9' + (Y.state.visited % 10) + '4</b> 人次</div>' +
+            '<div>在线听道 <b>1,247</b> 条</div>' +
           '</div></div></div>' +
         '</div>' +
-        '<div class="col-side">' +
-          '<div class="panel"><div class="panel-h">通知公告</div><div class="panel-b"><ul class="notice-list">' + notices + '</ul></div></div>' +
-          '<div class="panel"><div class="panel-h">平台数据</div><div class="panel-b">' +
-            '<div class="stat-grid">' +
-              '<div class="stat"><b>2,847</b><span>合作门店</span></div>' +
-              '<div class="stat"><b>1,206</b><span>注册验配师</span></div>' +
-              '<div class="stat"><b>3,281,9' + (Y.state.visited % 10) + '4</b><span>累计服务人次</span></div>' +
-              '<div class="stat"><b>1,247</b><span>在线听道</span></div>' +
-            '</div>' +
-            '<p class="tip" style="font-size:12px;color:#8b96a3;margin-top:8px">本平台已为 3,281,9' + (Y.state.visited % 10) + '4 人次提供听觉服务。</p>' +
+        '<div class="side2">' +
+          '<div class="box"><div class="box-h">服务热线</div><div class="box-b" style="text-align:center">' +
+            '<div style="font-family:Arial,Helvetica,sans-serif;font-size:18px;color:#c00;font-weight:700;letter-spacing:.02em">400-XXX-XXXX</div>' +
+            '<div style="font-size:11.5px;color:#666;margin-top:3px">工作日 9:00—17:30</div></div></div>' +
+          '<div class="box"><div class="box-h">常用链接</div><div class="box-b tight"><ul class="sidelist">' +
+            '<li><a href="#/selftest">免费在线听力自测</a></li>' +
+            '<li><a href="#/spec">代祭服务规范</a></li>' +
+            '<li><a href="#/rules">听道守则</a></li>' +
+            '<li><a href="#/price">服务价格表</a></li>' +
+            '<li><a href="#/help">常见问题</a></li>' +
+            '<li><a href="#/stores">门店查询</a></li>' +
+          '</ul></div></div>' +
+          '<div class="box"><div class="box-h">访客统计</div><div class="box-b" style="text-align:center;font-size:11.5px;color:#666">' +
+            '您是本站第 <b style="color:#c00;font-family:Arial,Helvetica,sans-serif">' + (3281904 + (Y.state.visited || 0)) + '</b> 位访客' +
           '</div></div>' +
         '</div>' +
       '</div>';
@@ -158,31 +184,51 @@
     document.title = '代祭工作台｜云听';
     crumb('代祭工作台');
     if (!Y.state.entered) {
-      app.innerHTML = '<div class="panel"><div class="panel-b"><p>该页面仅向已登记的听道开放。</p>' +
-        '<p><a class="btn" href="#/selftest">先完成听力自测</a></p></div></div>';
+      app.innerHTML = '<div class="box"><div class="box-h">提示</div><div class="box-b">' +
+        '<div class="doc-body"><p class="doc-p">该页面仅向已登记的听道开放。请先完成听力自测。</p></div>' +
+        '<p style="margin-top:8px"><a class="btn primary" href="#/selftest">开始自测</a></p></div></div>';
       return;
     }
     var rows = ORDERS.map(function (o, i) {
       var done = Y.state.done.indexOf(o.id) !== -1;
       var prev = i === 0 || Y.state.done.indexOf(ORDERS[i - 1].id) !== -1;
       var st = done ? '<span class="st-done">已归档</span>' : (prev ? '<span class="st-wait">待接</span>' : '<span class="st-lock">未派</span>');
-      var link = (done || prev) ? ('<a href="#/order/' + o.id + '">' + Y.esc(o.title) + '</a>') : Y.esc(o.title);
-      return '<div class="ticket-row' + (done || prev ? '' : ' locked') + '">' +
-        '<span class="no">' + (o.code || '——') + '</span>' +
-        '<span class="tt">' + link + '</span>' +
-        '<span class="st">' + st + '</span></div>';
+      var title = (done || prev) ? ('<a href="#/order/' + o.id + '">' + Y.esc(o.title) + '</a>') : Y.esc(o.title);
+      return '<tr class="' + (done || prev ? '' : 'locked') + '">' +
+        '<td>' + Y.esc(o.code || '——') + '</td>' +
+        '<td>' + title + '</td>' +
+        '<td>' + Y.esc(o.client || '—') + '</td>' +
+        '<td>' + Y.esc((o.grave || '—').replace(/\s+/g, ' ')) + '</td>' +
+        '<td>' + st + '</td></tr>';
     }).join('');
     var mins = Y.minutesInside();
     app.innerHTML =
       '<div class="desk">' +
-        '<div class="desk-bar"><span><i class="led on"></i>线路正常</span>' +
-          '<span><i class="led on"></i>录音机　转动中</span>' +
-          '<span><i class="led"></i>载波　待机</span>' +
-          '<span class="grow">在岗：' + Y.esc(Y.state.name || 'A-037') + '　｜　已值班 ' + mins + ' 分钟</span></div>' +
-        '<div class="panel" style="margin-top:12px"><div class="panel-h">我的工单（' + ORDERS.length + ' 张）</div>' +
-          '<div class="tickets">' + rows + '</div></div>' +
-        '<p class="tip" style="font-size:12.5px;color:#5b6672">提示：本平台录音均为现场设备采集。若录音中出现非现场声音，请照常勾选「已送达」，不要中断工单。</p>' +
-        '<p style="margin-top:10px"><a class="btn ghost small" href="#/profile">我的听力档案</a></p>' +
+        '<div class="desk-title"><span>云听代祭业务管理系统 v2.1</span><span class="btns">_ □ ×</span></div>' +
+        '<div class="desk-menu"><span>工单(F)</span><span>录音(R)</span><span>档案(A)</span><span>工具(T)</span><span>帮助(H)</span></div>' +
+        '<div class="desk-tool">' +
+          '<button class="btn" type="button">刷新</button>' +
+          '<button class="btn" type="button">归档</button>' +
+          '<button class="btn" type="button">打印</button>' +
+          '<span style="margin-left:10px;color:#555">在岗：' + Y.esc(Y.state.name || 'A-037') + '</span>' +
+        '</div>' +
+        '<div class="desk-body">' +
+          '<table class="tickets">' +
+            '<thead><tr><th style="width:110px">工单号</th><th>服务项目</th><th style="width:120px">委托人</th>' +
+            '<th style="width:190px">服务墓区</th><th style="width:70px">状态</th></tr></thead>' +
+            '<tbody>' + rows + '</tbody>' +
+          '</table>' +
+          '<div style="margin-top:8px;font-size:11.5px;color:#555">' +
+            '说明：本平台录音均为现场设备采集。若录音中出现非现场声音，请照常勾选「已送达」，不要中断工单。' +
+          '</div>' +
+        '</div>' +
+        '<div class="desk-status">' +
+          '<span><i class="led on"></i>线路正常</span>' +
+          '<span><i class="led on"></i>录音机 转动中</span>' +
+          '<span><i class="led"></i>载波 待机</span>' +
+          '<span style="margin-left:auto">已值班 ' + mins + ' 分钟</span>' +
+          '<span><a href="#/profile">听力档案</a></span>' +
+        '</div>' +
       '</div>';
   };
 
